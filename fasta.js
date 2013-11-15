@@ -129,7 +129,7 @@ this.buildUI=function(id){
 			s.j = j;
 			s.src = FASTA.modules[i].url;
 			s.onload = function(){
-				FASTA.modules[this.i].fun=jmat.clone2(FASTAmodule);
+				FASTA.modules[this.i].fun=FASTAmodule;
 				FASTA.modules[this.i].fun(FASTA.dir.fastas[this.j].div);
 			}
 			document.body.appendChild(s);	
@@ -290,16 +290,16 @@ FASTA.modules=[
 	}
 },
 
-{
-	name:'List variant calls (could take a while)',
-	url:'listAll.js',
-	//url:'https://www.googledrive.com/host/0BwwZEXS3GesiTjlHSmlOcEJaeDA/FASTA/listAll.js'
-	//fun:function(x){console.log(x)}
-},
+//{
+//	name:'USM encoding',
+//	url:'USMencode.js', // use something else later
+//	//url:'https://www.googledrive.com/host/0BwwZEXS3GesiTjlHSmlOcEJaeDA/FASTA/listAll.js'
+//	//fun:function(x){console.log(x)}
+//},
 
 {
-	name:'Plot all variant calls',
-	url:'plotAll.js',
+	name:'CpG frequency',
+	url:'CpGfreq.js',
 	//url:'https://www.googledrive.com/host/0BwwZEXS3GesiTjlHSmlOcEJaeDA/FASTA/plotAll.js'
 	//fun:function(x){console.log(x)}
 },
@@ -340,8 +340,13 @@ FASTA.getScript=function(url,cb,er){ // load script
 	s.id = this.uid();
 	if(!!cb){s.onload=cb}
 	if(!!er){s.onerror=er}
-	document.head.appendChild(s);
-	setTimeout('document.head.removeChild(document.getElementById("'+s.id+'"));',10000); // is the waiting still needed ?
+	if(!this.div){ // no DOM context
+		document.head.appendChild(s);
+		setTimeout('document.head.removeChild(document.getElementById("'+s.id+'"));',10000); // is the waiting still needed ?
+	} else {
+		this.div.appendChild(s);
+	}
+	
 	return s.id
 },
 
@@ -365,10 +370,19 @@ FASTA.require=function(url,fun){ // satisfies dependencies with other libraries
 }
 
 FASTA.require.lib={
-	jmat:'https://jmat.googlecode.com/git/jmat.js',
+	//jmat:'https://jmat.googlecode.com/git/jmat.js',
+	jmat:'jmat.js',
 	jQuery:'https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js',
-	d3:'https://cdnjs.cloudflare.com/ajax/libs/d3/3.3.9/d3.min.js'
+	d3:'https://cdnjs.cloudflare.com/ajax/libs/d3/3.3.9/d3.min.js',
+	usm:'usm.js' // use something external instead
 }
+
+
+/// Dependencies
+FASTA.require(['jmat','usm','jQuery']);
+
+/// MISCelaneous ////
+//if(!window.jQuery){FASTA.getScript('jquery-1.4.2.min.js')} // airplane debugging
 
 
 
