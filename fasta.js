@@ -304,6 +304,13 @@ FASTA.modules=[
 	//fun:function(x){console.log(x)}
 },
 
+{
+	name:'Consensus',
+	url:'consensus.js',
+	//url:'https://www.googledrive.com/host/0BwwZEXS3GesiTjlHSmlOcEJaeDA/FASTA/plotAll.js'
+	//fun:function(x){console.log(x)}
+},
+
 
 ];
 
