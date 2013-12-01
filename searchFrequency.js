@@ -11,16 +11,16 @@ FASTAmodule=function(div){
     var n = 0; // hits
     var nn = 0; // sequences hit
     var nnn = 0; // total sequence length
-    $('#seqSearch',div)[0].value='TG[TC]GG[TCAG]';
+    var pat = new RegExp($('#seqSearch',div)[0].value,'gi');
     dt.body.map(function(x){
         nnn +=x.length;
-        var m = x.match(/TG[TC]GG[TCAG]/gi);
+        var m = x.match(pat);
         if(!!m){
             n+=m.length;
             nn++;
         }  
     })
-    $('#divHeadBody',div)[0].innerHTML='<span style="color:blue">CpG count (/TG[TC]GG[TCAG]/gi): '+n+' hits in '+nn+' sequences, accounting for '+n*600/nnn+'% of the sequences length.</span>';
+    $('#divHeadBody',div)[0].innerHTML='<span style="color:blue">CpG count (/'+$('#seqSearch',div)[0].value+'/gi): '+n+' hits in '+nn+' sequences, accounting for '+n*600/nnn+'% of the sequences length.</span>';
 }
 
 
